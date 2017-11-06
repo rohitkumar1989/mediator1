@@ -16,8 +16,8 @@ class cricketmatch{
 	}
 	void notify();
 	void get_state(){
-		cout<<"score = "<<score<<"\n";
-		cout<<"wicket ="<<wicket<<"\n";
+		cout<<" score = "<<score<<"\n";
+		cout<<"wicket = "<<wicket<<"\n";
 	}
 	
 	void attach(observer* o){
@@ -27,43 +27,58 @@ class cricketmatch{
 
 class observer{
 	public: 
+		   cricketmatch* model;
+		  // observer(cricketmatch* m):model(m){}
 		   virtual void update(cricketmatch*)=0;
+		   cricketmatch* getsubject();
 };
 
 class scoreavg:public observer{
 	public:
+	    scoreavg(cricketmatch* m){
+			model=m;
+			m->attach(this);
+		}
 		void update(cricketmatch* c){
-			c->get_state();
+		    getsubject()->get_state();
 			cout<<"average score required : "<<(float)c->score/c->overleft<<" rpo. \n";
 		}
+		
 	
 };
 
 class wicketsleft:public observer{
 	public:
-		void update(cricketmatch* c){
-			c->get_state();
+	    wicketsleft(cricketmatch* m){
+			model=m;
+			m->attach(this);
+		}
+
+	void update(cricketmatch* c){
+			getsubject()->get_state();
 			cout<<"wicket left : "<< (12)-(c->wicket)<<" .\n";
-		
 		}
 };
 
-	void cricketmatch::notify(){
-			for(int i=0;i<view.size();i++){
-				view[i]->update(this);//can pass other local info if do not want to send "this pointer"
-			}
+void cricketmatch::notify(){
+		for(int i=0;i<view.size();i++){
+		 view[i]->update(this);//can pass other local info if do not want to send "this pointer"
+	}
 
-	}	
-int main(){
+}	
+ cricketmatch* observer::getsubject(){
+	 return model;
+ }
+	int main(){
 	
 	cricketmatch c;
 //	observer* co[]={ new scoreavg,new wicketsleft};
-    scoreavg avg;
-    wicketsleft w;
+    scoreavg avg(&c);
+    wicketsleft w(&c);
 		
 	
-	c.attach(&avg);
-	c.attach(&w);
+//	c.attach(&avg);
+//	c.attach(&w);
 	
 	c.set_state(50,6,15);
 }
