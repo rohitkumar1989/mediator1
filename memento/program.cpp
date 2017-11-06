@@ -14,11 +14,11 @@ class memento{//memento....created and read by originator
 		  void set_state(int i){
 			_state=i;
 		  }
-	friend class number;//originator
+	//friend class number;//originator
 };
 
 class number{//originator...create memento...know ow to create memento which get restore in future
-			 //
+			 
 	int _state;
 	public: 
 		   number(int i):_state(i){
@@ -29,7 +29,7 @@ class number{//originator...create memento...know ow to create memento which get
 			}
 			
 			void reinstate(memento* m){//caretaker send memento which it keep with it
-				_state=m->_state; //restore of  state happen here
+				_state=m->get_state(); //restore of  state happen here
 			}
 			
 			void  half(){//operations on  state
