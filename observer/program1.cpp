@@ -47,7 +47,7 @@ class wicketsleft:public observer{
 
 	void cricketmatch::notify(){
 			for(int i=0;i<view.size();i++){
-			view[i]->update(this);
+			view[i]->update(this);//can pass other local info if do not want to send "this pointer"
 		}
 
 	}	
