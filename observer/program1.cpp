@@ -1,19 +1,22 @@
 #include<iostream>
+#include<vector>
 using namespace std;
 class observer;
 class cricketmatch{
-	int score=0,wicket=0,overleft=0;
+
 	vector<observer*> view;
 	public:
-	cricketmatch();
-	void set_state(int score,int wicket){
-		for(int i=0;i<;view.size();i++){
-			view[0]->update(this);
-		}
+		int score=0,wicket=0,overleft=0;
+	cricketmatch(){};
+	void set_state(int score,int wicket,int over){
+		this->score=score;
+		this->wicket=wicket;
+		this->overleft=over;
+		notify();
 	}
-	
+	void notify();
 	void get_state(){
-		cout<<"score = "<<score;<<"\n"
+		cout<<"score = "<<score<<"\n";
 		cout<<"wicket ="<<wicket<<"\n";
 	}
 	
@@ -30,7 +33,7 @@ class observer{
 class scoreavg:public observer{
 	public:
 		void update(cricketmatch* c){
-			cout<<"average score required : "<<c->score/c->overleft<<" per over. \n";
+			cout<<"average score required : "<<(float)c->score/c->overleft<<" rpo. \n";
 		}
 	
 };
@@ -42,14 +45,22 @@ class wicketsleft:public observer{
 		}
 };
 
+	void cricketmatch::notify(){
+			for(int i=0;i<view.size();i++){
+			view[i]->update(this);
+		}
+
+	}	
 int main(){
 	
 	cricketmatch c;
-	scoreavg avg;
+//	observer* co[]={ new scoreavg,new wicketsleft};
+    scoreavg avg;
     wicketsleft w;
 		
-	c->attach(&avg);
-	c->attach(&w);
 	
-	c.setstate(50,6,15);
+	c.attach(&avg);
+	c.attach(&w);
+	
+	c.set_state(50,6,15);
 }
