@@ -1,10 +1,12 @@
+//PULL---observer store subject and when required fetch detail by calling function of the subject
+//registered observer with subject in its conatructor
 #include<iostream>
 #include<vector>
 using namespace std;
 class observer;
-class cricketmatch{
+class cricketmatch{//subject 
 
-	vector<observer*> view;
+	vector<observer*> view;//keep track of its dependencies
 	public:
 		int score=0,wicket=0,overleft=0;
 	cricketmatch(){};
@@ -20,7 +22,7 @@ class cricketmatch{
 		cout<<"wicket = "<<wicket<<"\n";
 	}
 	
-	void attach(observer* o){
+	void attach(observer* o){//method to register depeendencies
 		view.push_back(o);
 	}
 };
@@ -72,8 +74,8 @@ void cricketmatch::notify(){
 	int main(){
 	
 	cricketmatch c;
-//	observer* co[]={ new scoreavg,new wicketsleft};
-    scoreavg avg(&c);
+
+    scoreavg avg(&c); 
     wicketsleft w(&c);
 		
 	
